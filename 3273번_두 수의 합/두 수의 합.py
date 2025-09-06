@@ -12,6 +12,33 @@
 
 N = int(input())
 arr = list(map(int, input().split()))
+arr.sort()
 X = int(input())
 
+"""
+    모두 다른 수이니까 포인터 1이 포인터 2 보다 작을떄 까지 반복 
+    > 그러면 시간복잡도 N
+    - 조건 1. 
+        - 두수의 합이 X보다 작을때 > p2를 줄여봐야 계속 더 작은 수 밖에 안나옴 > 돌 필요없음
+    - 조건 2.
+        - 두 수의 합이 같으면? 찾음 > 이제 두 포인터를 각각 이동시킴
+    - 조건 3.
+        - 두 수의 합이 X보다 크면? > 포인터 1은 고정시키고, 포인터 2를 이동해 다음 쌍을 찾아야 함
+"""
+
 cnt = 0
+p1 = 0
+p2 = N-1
+
+while p1 < p2:
+    value = arr[p1] + arr[p2]
+    if value < X:
+        p1 += 1
+    elif value == X:
+        cnt += 1
+        p1 += 1
+        p2 -= 1
+    else: # vlaue > X
+        p2 -= 1
+
+print(cnt)
