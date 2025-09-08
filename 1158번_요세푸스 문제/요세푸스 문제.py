@@ -18,8 +18,18 @@
         - N = 5000
     - IDEA:
         - 1. 리스트로 구현
+        - 2. K를 pop한다.
+        - 3. (+ K - 1) 리스트 길이의 나머지
+        - 3번의 점화식으로 구함
 """
 
 N, K = map(int, input().split())
 arr = list(range(1, N+1))
-print(arr)
+
+result = []
+idx = 0
+while len(result) < N:
+    idx = (idx + K - 1) % len(arr)
+    result.append(arr.pop(idx))
+    
+print('<' + str(result)[1:-1] + '>')
