@@ -15,30 +15,34 @@
         - 자신의 위치에서 자신보다 크고 가장 가까운 큰 숫자의 인덱스를 찾아라
         - N = 500,000 > N 만큼의 연산만 사용해야 함
     - IDEA:
-    - 1. 
-        - 스택에 pop을 해서, 맨 오른쪽의 숫자를 뽑음
-        - cnt는 -1에서 감소하며, 해당 인덱스의 숫자를 증가함 
-        - 예시) [0,0,0,0] / [6,9,5,7] 
-                > pop 7, pop 5 / [cnt -1] =  
+        - 배열의 앞부터 순차적으로 스택에 삽입
+            - 스택이 비어있으면? > 막고있는 탑이 없음
+            - 앞과 스택을 비교 했을때, 나보다 큰 값이 없다...?
+                - 모든 스택을 초기화 하고 스택에 넣는다
+            - 나보다 커, > 삽입 > 앞의 원소의 인덱스 값을 기록
 """
 N = int(input())
 
 arr = list(map(int, input().split()))
-result = [0] * N
-idx = N-1
 stack = []
+result = [0] * N
 
-while arr:
-    value = arr.pop()
-    # if value < arr[-1]:
-    #     result[idx] = idx-1
-    stack.append((value, idx))
+IDX = 1
 
-    if stack[-1] > arr[-1]:
-        continue
-    else: # 레이저 닿음
-        # 그러면 만난 탑의 인덱스를 넣어야함 > 어떻게?
-        v, i = stack.pop()
-        result[i] = idx
-        
+while IDX <= N:
+    v = arr[IDX-1] # 현재 값
 
+    while stack and stack[-1][0] < v: # 나보다 작아? 
+        stack.pop()
+
+    if stack: # 스택이 비어 있지 않다면 → 현재 탑보다 큰 탑이 수신
+        result[IDX-1] = stack[-1][1]
+        stack.append((v,IDX))
+
+    else: # 스택이 비었음 > 나보다 큰 탑이 없음
+        result[IDX-1] = 0
+        stack.append((v,IDX)) # 스택에 삽입
+
+    IDX += 1
+
+print(*result)
