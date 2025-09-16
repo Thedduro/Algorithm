@@ -13,19 +13,18 @@
             - 2.1 범위를 벗어나면 이동가능
             - 2.2 BFS가 다 끝날때까지 탈출 못해? > 불가
 """
-import math
 from collections import deque
 
 direction = [(0,1),(0,-1),(1,0),(-1,0)]
 
-def fire_dfs():
-    INF = math.inf
+def fire_bfs():
+    INF = 10**9
     fire_map = [[INF] * w for _ in range(h)]
     
     while fire_queue:
         x, y, time = fire_queue.popleft() 
         fire_map[x][y] = time
-
+        
         for dx, dy in direction:
             nx, ny = x + dx, y + dy 
             if nx < 0 or ny < 0 or nx >= h or ny >= w:
@@ -35,42 +34,52 @@ def fire_dfs():
             if fire_map[nx][ny] != INF: # 이미 불이 번진경우 > 즉 방문한 경우 
                 continue
             else:
+                fire_map[nx][ny] = time+1  # 큐 넣기 전에 방문 처리
                 fire_queue.append((nx, ny, time + 1))
     return fire_map
 
 
-def survivor_dfs(fire_map):
+def survivor_bfs(fire_map):
+    visited = [[False] * w for _ in range(h)]
+    f_x, f_y, t = survivor[0]
+    visited[f_x][f_y] = True
+
     while survivor:
         x, y, time = survivor.popleft()
-        time += 1
 
         for dx, dy in direction:
             nx, ny = x + dx, y + dy
+
             if nx < 0 or ny < 0 or nx >= h or ny >= w: # 상근이가 범위를 넘으면? 탈출 가능
-                    return time 
+                    return time+1
             if board[nx][ny] == '#':
                 continue
-            if fire_map[nx][ny] > time: # 불이 도달한 시간보다 상근이가 가는 시간이 더 짧으면
-                survivor.append((nx, ny, time))
+            if visited[nx][ny]:
+                continue
+            if fire_map[nx][ny] > time+1: # 불이 도달한 시간보다 상근이가 가는 시간이 더 짧으면
+                visited[nx][ny] = True
+                survivor.append((nx, ny, time+1))
+   
     # 다끝났는데? 리턴을 안했잖아? > 탈출 불가
     return False
 
 T = int(input())
 for _ in range(T): 
     w, h = map(int, input().split())
-    board = [input() for _ in range(h)]
+    board = [input().strip() for _ in range(h)]
     
     fire_queue = deque()
     survivor = deque()
+    
     # 불의 시작 위치를 큐에 삽입
     for i in range(h):
-        for j in range(h):
+        for j in range(w):
             if board[i][j] == '*':
                 fire_queue.append((i,j,0)) # 위치와 시간 삽입
             if board[i][j] == '@':
                 survivor.append((i,j,0))
 
-    value = survivor_dfs(fire_dfs())
+    value = survivor_bfs(fire_bfs())
     
     if not value:
         print("IMPOSSIBLE")
