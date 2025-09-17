@@ -34,6 +34,12 @@ def fire_bfs():
             if fire_map[nx][ny] != INF: # 이미 불이 번진경우 > 즉 방문한 경우 
                 continue
             else:
+                """
+                    큐에 넣기 전에 방문처리를 또 하는 이유:
+                        - (nx,ny)가 아직 INF라서 조건을 통과 → 큐에 들어감.
+                        - 다른 경로에서도 같은 칸 (nx,ny)를 확인 → 여전히 INF이므로 또 큐에 들어감.
+                        - 결국, (nx,ny) 좌표가 큐에 여러 번 들어가게 됨. → 큐가 급격하게 증가하여, 메모리 사용량이 급증한다.
+                """
                 fire_map[nx][ny] = time+1  # 큐 넣기 전에 방문 처리
                 fire_queue.append((nx, ny, time + 1))
     return fire_map
