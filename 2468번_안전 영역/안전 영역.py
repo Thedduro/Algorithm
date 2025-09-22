@@ -21,32 +21,46 @@ direction = [(1,0),(-1,0),(0,1),(0,-1)]
 def bfs(n):
     visited = [[False] * N for _ in range(N)]
     safety = 0
+
     for x in range(N):
         for y in range(N):
+            if n == 27:
+                print(x,y,board[x][y])
             if not visited[x][y] and board[x][y] > n:
+                
                 queue = deque()
                 queue.append((x, y))
                 visited[x][y] = True
 
                 while queue:
-                    x, y = queue.popleft()
+                    xx, yy = queue.popleft()
                     for dx, dy in direction:
-                        nx , ny = x + dx, y + dy
+                        nx , ny = xx + dx, yy + dy
                         if 0 <= nx < N and 0 <= ny < N:
                             if not visited[nx][ny] and board[nx][ny] > n:
                                 queue.append((nx, ny))
                                 visited[nx][ny] = True
                 safety += 1
-    return safety
+                
+    return safety, visited
 
-N = int(input())
-board = [list(map(int, input().split())) for _ in range(N)]
-max_height = max(map(max, board))  # 입력값에서 가장 높은 지점까지만 검사
-min_height = min(map(min, board))
-value = 0
+N = int(input().strip())
+board = [list(map(int, input().strip().split())) for _ in range(N)]
+print(board)
+min_height, max_height = 100, 0
+for i in range(N):
+  for j in range(N):
+    if board[i][j] > max_height:
+      max_height = board[i][j]
+    if board[i][j] < min_height:
+      min_height = board[i][j]
+      
+value = 1
 
-for i in range(min_height, max_height + 1):
-    safety = bfs(i)
+for i in range(max_height):
+    safety, visited = bfs(i)
     if safety > value: 
+        # print(i, safety, visited)
         value = safety
+        
 print(value)
