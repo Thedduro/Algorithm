@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 string = list(input())
 M = int(input())
-=======
+
 """
     - IDEA:
         - 키로거 문제의 풀이처럼
@@ -31,4 +30,3 @@ for _ in range(M):
         left.append(command[1])
     
 print(''.join(left + right[::-1]))
->>>>>>> b701f7aeb3f0e10937225b3c13f6c079ca18d895
