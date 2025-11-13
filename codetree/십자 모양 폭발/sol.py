@@ -6,7 +6,6 @@
     - 터지는 칸들을 리스트에서 삭제하고, 나중에 리스트의 길이를 N을 만족하게끔 0을 추가
 
 '''
-from collections import deque
 
 n = int(input())
 grid = [list(map(int, input().split())) for _ in range(n)]
@@ -18,7 +17,7 @@ direction = [(-1,0),(1,0),(0,-1),(0,1)]
 visited = set()
 visited.add((r,c))
 
-max_cnt = grid[r][c]
+max_cnt = grid[r][c]-1
 grid[r][c] = 0
 
 for dx, dy in direction:
@@ -30,4 +29,15 @@ for dx, dy in direction:
             visited.add((nx,ny))
             grid[nx][ny] = 0
             x, y = nx, ny
-        
+
+for j in range(n):
+    col = [grid[i][j] for i in range(n) if grid[i][j] != 0]
+
+    for i in range(n):
+        grid[i][j] = 0
+    
+    for idx, val in enumerate(col[::-1]):
+        grid[n-1-idx][j] = val
+
+for row in grid:
+    print(*row)
