@@ -10,29 +10,6 @@ n, m = map(int, input().split())
 nums = [int(input()) for _ in range(n)]
 nums = nums[::-1]
 
-# stack = []
-
-# for number in numbers:
-#     if stack and stack[-1][0] != number:
-#         if stack[-1][1] >= m:
-#             stack.pop()
-
-#     if stack and stack[-1][0] == number:
-#         val, cnt = stack[-1]
-#         stack[-1] = (val, cnt+1)
-
-#     if not stack or stack[-1][0] != number:
-#         stack.append((number, 1))
-
-# if stack[-1][1] >= m:
-#     stack.pop()
-
-# print(len(stack))
-# while stack:
-#     num, cnt = stack.pop()
-#     print(num)
-
-
 while True:
     new = []
     removed = False
