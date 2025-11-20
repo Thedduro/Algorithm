@@ -22,25 +22,32 @@ grid = [list(map(int, input().split())) for _ in range(n)]
 # Get m marble positions
 marbles = [tuple(map(int, input().split())) for _ in range(m)]
 marbles = [(x-1, y-1) for x, y in marbles]
-print(marbles)
-
 direction = [(-1,0),(1,0),(0,-1),(0,1)]
 
 for _ in range(t):
-    new = []
+    moves = []
     for x,y in marbles:
-        max, fx,fy = 0, x, y
-        print(x,y)
+        max_cnt, fx,fy = 0, x, y
         for dx, dy in direction: 
             nx, ny  = x+dx, y+dy
-            if 0<=nx<n and 0<=ny<n:
-                if grid[nx][ny] > grid[x][y] and grid[nx][ny] > max:
-                    max = grid[nx][ny]
-                    fx, fy = nx, ny
-        new.append((fx,fy))
-        # 중복 제거 
-        for n in new:
+            if 0<=nx<n and 0<=ny<n and grid[nx][ny] > max_cnt:
+                max_cnt = grid[nx][ny]
+                fx, fy = nx, ny
+        moves.append((fx,fy))
 
-        marbles = new
+    # 중복 제거 
+    dup = {}
+    for move in moves:
+        if move not in dup.keys():
+            dup[move] = 1
+        else:
+            dup[move] += 1
+    arr = []
+    for key, cnt in dup.items():
+        if cnt >= 2:
+            continue
+        else:
+            arr.append(key)
+    marbles = arr
     
-    print('#',t,new)
+print(len(marbles))
