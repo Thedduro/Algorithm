@@ -33,7 +33,6 @@ while True:
     if board[x][y] == 0:
         cnt += 1
         board[x][y] = -1 # 청소 처리
-        print(x, y, d)
     
     if board[x-1][y] != 0 and board[x][y+1] != 0 and board[x+1][y] != 0 and board[x][y-1] != 0: # 4칸을 모두 청소할수 없음
         back = (d + 2) % 4  
@@ -52,6 +51,6 @@ while True:
             nx, ny = x + dx, y + dy
             if board[nx][ny] == 0:
                 x, y = nx, ny
-                continue
+                break
 
 print(cnt)
